@@ -1,0 +1,15 @@
+
+
+service slapd stop
+rm -rf /tmp/slapd.d
+mkdir -p /tmp/slapd.d
+
+cp telco.schema /etc/ldap/schema/ && slaptest -f telco.conf -F /tmp/slapd.d/ || (echo FAIL; exit 1 )
+
+P=/slapd.d/cn=config/cn=schema
+
+cp /tmp/$P/*telco.ldif /etc/ldap/$P
+chown openldap: /etc/ldap/$P/*
+
+service slapd start
+

@@ -1,0 +1,81 @@
+# EXAMPLE.COM SCHEMA FILE
+# takes values:
+# true = wears clean socks on monday
+# false = does not wear clean socks on monday
+
+#attributetype ( 1.3.6.1.4.1.6863.2.3.107 NAME 'dohicky'
+#  EQUALITY booleanMatch
+  #SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 )
+
+# if present must take the value = 0
+# attributetype ( 1.3.6.1.4.1.6863.2.3.108 NAME 'ageAtBirth'
+#  EQUALITY integerMatch
+#  ORDERING integerOrderingMatch
+#  SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 )
+
+# string used to describe the height of the person in either feet/inches or meters
+# may be expressed as xfyi e.g. 5f7i (5 feet 7 inches) or x.ym e.g. 1.95m (1.95 meters)
+# the values f, i, m above are case insensitive 
+#attributetype ( 1.3.6.1.4.1.6863.2.3.109 NAME 'gobbledegook'
+#  EQUALITY caseIgnoreMatch
+#  SUBSTR caseIgnoreSubstringsMatch
+#  ORDERING caseIgnoreOrderingMatch
+#  SYNTAX 1.3.6.1.4.1.1466.115.121.1.44{200} )
+
+# objectclass used with people address book to define required information
+# for State Law 5.7.3 - data is defined by law to be private - limited access allowed
+
+ attributetype ( 1.3.6.1.4.1.6863.2.3.110 NAME 'IMSI'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{32768} )
+
+attributetype (  1.3.6.1.4.1.6863.2.3.111 NAME 'MSISDN'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{32768} )
+
+attributetype ( 1.3.6.1.4.1.6863.2.3.112 NAME 'DSC'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{32768} )
+
+
+
+attributetype ( 1.3.6.1.4.1.6863.2.3.113 NAME 'IMEI'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{32768} )
+	
+
+attributetype ( 1.3.6.1.4.1.6863.2.3.114 NAME 'ICCID'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{32768} )
+
+attributetype ( 1.3.6.1.4.1.6863.2.3.115 NAME 'useIfDialed'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{32768} )
+
+
+objectclass ( 1.3.6.1.4.1.6863.2.4.57 NAME 'subscription'
+  DESC 'v-tell subscription'
+  SUP top STRUCTURAL
+  MUST ( IMSI $ MSISDN )
+  MAY (IMEI $ DSC ) )
+  
+
+objectclass ( 1.3.6.1.4.1.6863.2.4.58 NAME 'sim'
+  DESC 'iccid and sim card parameters'
+  SUP top STRUCTURAL
+  MUST ( ICCID )
+  MAY (IMSI $ MSISDN $ DSC ) )
+
+objectclass ( 1.3.6.1.4.1.6863.2.4.59 NAME 'multiNumber'
+  DESC 'multiNumber'
+  SUP top STRUCTURAL
+  MUST ( MSISDN )
+  MAY ( useIfDialed $ DSC ) )
+
+
